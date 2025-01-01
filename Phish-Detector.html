@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing URL Detection Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Phishing URL Detection Tool</h1>
+        <p>Enter a URL to check if it is a phishing website.</p>
+        <form id="urlForm">
+            <input type="url" id="url" name="url" placeholder="Enter URL" required>
+            <button type="submit">Check URL</button>
+        </form>
+        <div id="result" class="hidden">
+            <p><strong>Result:</strong> <span id="resultMessage"></span></p>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#urlForm').submit(function(event){
+                event.preventDefault();
+                var url = $('#url').val();
+
+                $.post('/check_url', {url: url}, function(data){
+                    var message = data.is_phishing ? "This URL is a phishing site!" : "This URL is safe!";
+                    $('#resultMessage').text(message);
+                    $('#result').removeClass('hidden');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
